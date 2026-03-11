@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <!-- ============================================================
+       👋 STEP 1: Change the title below to YOUR NAME
+       ============================================================ -->
+  <title>YOUR NAME — YOUR JOB TITLE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #f7f5f2;
+      --surface: #ffffff;
+      --ink: #111010;
+      --ink-muted: #6b6660;
+      --ink-faint: #b5b0aa;
+      --accent: #c8a96e;
+      --border: #e6e1db;
+      --radius: 2px;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 60px;
+      background: rgba(247,245,242,0.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, padding 0.3s;
+    }
+    nav.scrolled { border-color: var(--border); padding: 20px 60px; }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 500;
+      letter-spacing: 0.04em;
+      text-decoration: none; color: var(--ink);
+    }
+    .nav-logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--ink-muted);
+      text-decoration: none; position: relative;
+      transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 1px; background: var(--accent);
+      transition: width 0.3s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .nav-links a:hover::after { width: 100%; }
+    .nav-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.1em;
+      color: var(--accent); border: 1px solid var(--accent);
+      padding: 5px 14px; border-radius: 20px;
+      display: flex; align-items: center; gap: 7px;
+    }
+    .nav-badge::before {
+      content: ''; width: 6px; height: 6px;
+      background: var(--accent); border-radius: 50%;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 120px 60px 60px;
+      position: relative; overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.45; pointer-events: none;
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 28px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-eyebrow::before {
+      content: ''; width: 40px; height: 1px; background: var(--accent);
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(50px, 5.5vw, 82px);
+      font-weight: 300; line-height: 1.05;
+      letter-spacing: -0.02em; margin-bottom: 28px;
+    }
+    h1 em { font-style: italic; color: var(--ink-muted); }
+    .hero-desc {
+      font-size: 15px; color: var(--ink-muted);
+      max-width: 440px; line-height: 1.85; margin-bottom: 48px;
+    }
+    .hero-cta { display: flex; gap: 16px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--ink); color: var(--bg);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 16px 32px; text-decoration: none;
+      border-radius: var(--radius);
+      transition: background 0.2s, transform 0.2s; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--accent); transform: translateY(-2px); }
+    .btn-ghost {
+      color: var(--ink-muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 16px 32px; text-decoration: none;
+      border: 1px solid var(--border); border-radius: var(--radius);
+      transition: border-color 0.2s, color 0.2s, transform 0.2s; display: inline-block;
+    }
+    .btn-ghost:hover { border-color: var(--ink); color: var(--ink); transform: translateY(-2px); }
+
+    /* HERO CARD */
+    .hero-visual {
+      position: relative; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-card {
+      width: 340px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 4px;
+      padding: 40px; box-shadow: 0 24px 64px rgba(0,0,0,0.06);
+      position: relative; animation: float 6s ease-in-out infinite;
+    }
+    @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+    .hero-card-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.14em;
+      color: var(--ink-faint); text-transform: uppercase; margin-bottom: 20px;
+    }
+    .hero-card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 500; margin-bottom: 6px;
+    }
+    .hero-card-role { font-size: 13px; color: var(--ink-muted); margin-bottom: 28px; }
+    .hero-card-stat {
+      display: flex; justify-content: space-between;
+      padding: 16px 0; border-top: 1px solid var(--border);
+    }
+    .stat-val {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 500;
+    }
+    .stat-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.1em;
+      color: var(--ink-faint); text-transform: uppercase; margin-top: 2px;
+    }
+    .hero-card-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 24px; }
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px; letter-spacing: 0.1em; color: var(--ink-muted);
+      background: var(--bg); border: 1px solid var(--border);
+      padding: 5px 12px; border-radius: 20px;
+    }
+    .tag.gold { color: var(--accent); border-color: var(--accent); background: #fdf8f0; }
+    .hero-card-decor {
+      position: absolute; top: -20px; right: -20px;
+      width: 80px; height: 80px;
+      border: 1px solid var(--accent); border-radius: 50%; opacity: 0.2;
+    }
+
+    /* SECTIONS */
+    section { padding: 100px 60px; }
+    .section-header { margin-bottom: 60px; }
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--accent);
+      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    }
+    .section-label::before { content:''; width:30px; height:1px; background:var(--accent); }
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(34px, 4vw, 56px);
+      font-weight: 300; line-height: 1.1; letter-spacing: -0.02em;
+    }
+    h2 em { font-style: italic; color: var(--ink-muted); }
+
+    /* ABOUT */
+    #about { background: var(--surface); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .about-text p {
+      color: var(--ink-muted); margin-bottom: 20px;
+      font-size: 15px; line-height: 1.9;
+    }
+    .about-text p strong { color: var(--ink); font-weight: 500; }
+    .cert-list { margin-top: 36px; }
+    .cert-item {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 20px 0; border-bottom: 1px solid var(--border);
+    }
+    .cert-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Mono', monospace; font-size: 9px;
+      letter-spacing: 0.1em; color: var(--accent); text-transform: uppercase;
+    }
+    .cert-title { font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+    .cert-sub { font-size: 12px; color: var(--ink-faint); font-family: 'DM Mono', monospace; }
+    .sidebar-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 4px; padding: 32px; margin-bottom: 20px;
+    }
+    .sidebar-card-title {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--ink-faint); margin-bottom: 16px;
+    }
+    .info-line {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; color: var(--ink-muted); margin-bottom: 8px;
+    }
+    .availability-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #f0faf0; color: #3a7a3a;
+      border: 1px solid #b5dfb5;
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.1em; padding: 8px 16px; border-radius: 20px; margin-top: 16px;
+    }
+    .availability-pill::before {
+      content:''; width:6px; height:6px; background:#3a7a3a;
+      border-radius:50%; animation: pulse 2s ease-in-out infinite;
+    }
+    .skill-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid var(--border);
+      font-size: 13px; color: var(--ink-muted);
+    }
+    .skill-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .skill-dot { width:5px; height:5px; background:var(--accent); border-radius:50%; }
+
+    /* SKILLS */
+    #skills { background: var(--bg); }
+    .skills-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 24px; }
+    .skill-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 4px; padding: 36px;
+      transition: border-color .3s, transform .3s, box-shadow .3s; cursor: default;
+    }
+    .skill-card:hover { border-color: var(--accent); transform: translateY(-6px); box-shadow: 0 20px 48px rgba(0,0,0,.07); }
+    .skill-card-number {
+      font-family: 'Cormorant Garamond', serif; font-size: 48px; font-weight: 300;
+      color: var(--border); line-height: 1; margin-bottom: 20px; transition: color .3s;
+    }
+    .skill-card:hover .skill-card-number { color: var(--accent); opacity: .4; }
+    .skill-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 500; margin-bottom: 16px;
+    }
+
+    /* PROJECTS */
+    #projects { background: var(--surface); }
+    .project-row {
+      display: grid; grid-template-columns: 80px 1fr auto;
+      gap: 40px; align-items: center;
+      padding: 40px 0; border-bottom: 1px solid var(--border);
+      text-decoration: none; color: inherit;
+      position: relative; cursor: pointer;
+    }
+    .project-row:first-of-type { border-top: 1px solid var(--border); }
+    .project-row::after {
+      content: ''; position: absolute;
+      left: -60px; right: -60px; top: 0; bottom: 0;
+      background: var(--bg); z-index: -1; opacity: 0; transition: opacity .3s;
+    }
+    .project-row:hover::after { opacity: 1; }
+    .project-num {
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      letter-spacing: 0.1em; color: var(--ink-faint);
+    }
+    .project-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 400; margin-bottom: 6px; transition: color .2s;
+    }
+    .project-row:hover .project-name { color: var(--accent); }
+    .project-desc { font-size: 13px; color: var(--ink-muted); }
+    .project-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .project-tags { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .project-arrow { font-size: 20px; color: var(--ink-faint); transition: transform .3s, color .2s; }
+    .project-row:hover .project-arrow { transform: translate(4px,-4px); color: var(--accent); }
+
+    /* CONTACT */
+    #contact { background: var(--ink); color: var(--bg); }
+    #contact .section-label { color: var(--accent); }
+    #contact .section-label::before { background: var(--accent); }
+    #contact h2 { color: var(--bg); }
+    #contact h2 em { color: rgba(247,245,242,.4); }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+    .contact-desc { color: rgba(247,245,242,.55); font-size: 15px; line-height: 1.9; margin-top: 24px; max-width: 380px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 16px;
+      padding: 24px 0; border-bottom: 1px solid rgba(247,245,242,.1);
+      text-decoration: none; color: var(--bg); transition: gap .3s;
+    }
+    .contact-link:hover { gap: 24px; }
+    .contact-link-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(247,245,242,.35); width: 80px; flex-shrink: 0;
+    }
+    .contact-link-arrow { margin-left: auto; opacity: .3; transition: opacity .2s; }
+    .contact-link:hover .contact-link-arrow { opacity: 1; }
+    .contact-form-area {
+      background: rgba(247,245,242,.04);
+      border: 1px solid rgba(247,245,242,.1);
+      border-radius: 4px; padding: 40px;
+    }
+    .form-row { margin-bottom: 20px; }
+    .form-label {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(247,245,242,.35); display: block; margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%; background: rgba(247,245,242,.06);
+      border: 1px solid rgba(247,245,242,.12); border-radius: 2px;
+      padding: 14px 16px; font-family: 'DM Sans', sans-serif;
+      font-size: 14px; color: var(--bg); outline: none; transition: border-color .2s;
+    }
+    .form-input::placeholder { color: rgba(247,245,242,.25); }
+    .form-input:focus { border-color: var(--accent); }
+    textarea.form-input { resize: vertical; min-height: 100px; }
+    .btn-send {
+      width: 100%; background: var(--accent); color: var(--ink);
+      font-family: 'DM Mono', monospace; font-size: 11px;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      border: none; cursor: pointer; padding: 18px; border-radius: 2px;
+      transition: opacity .2s, transform .2s; margin-top: 8px;
+    }
+    .btn-send:hover { opacity: .85; transform: translateY(-1px); }
+
+    /* FOOTER */
+    footer {
+      background: #0c0b0a; padding: 32px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 16px; color: rgba(247,245,242,.4); text-decoration: none;
+    }
+    .footer-copy {
+      font-family: 'DM Mono', monospace; font-size: 10px;
+      letter-spacing: 0.1em; color: rgba(247,245,242,.2);
+    }
+
+    /* ANIMATIONS */
+    .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      nav { padding: 20px 24px; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; padding: 120px 24px 60px; }
+      .hero-visual { display: none; }
+      section { padding: 72px 24px; }
+      .about-grid, .contact-grid { grid-template-columns: 1fr; gap: 48px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      .project-row { grid-template-columns: 1fr; gap: 16px; }
+      .project-num { display: none; }
+      footer { flex-direction: column; gap: 12px; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAV — Change initials and badge text
+       ============================================================ -->
+  <nav id="nav">
+    <!-- ✏️ Change "K.P" to your initials -->
+    <a href="#hero" class="nav-logo">K<span>.</span>Pete</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <!-- ✏️ Change badge text if needed -->
+    <div class="nav-badge">Available for hire</div>
+  </nav>
+
+  <!-- ============================================================
+       HERO SECTION
+       ============================================================ -->
+  <section id="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-content fade-up">
+
+      <div class="hero-eyebrow">Software Engineer & AI Enthusiast</div>
+
+      <h1>Kananelo<br/><em>Pete</em></h1>
+
+      <p class="hero-desc">
+        I build modern web applications and lead AI-powered teams — combining clean frontend engineering with a passion for intelligent systems that actually solve real problems.
+      </p>
+
+      <div class="hero-cta">
+        <a href="#projects" class="btn-primary">View My Work</a>
+        <a href="#contact" class="btn-ghost">Get in Touch</a>
+      </div>
+    </div>
+
+    <!-- FLOATING CARD (right side on desktop) -->
+    <div class="hero-visual fade-up">
+      <div class="hero-card">
+        <div class="hero-card-decor"></div>
+        <div class="hero-card-label">// profile.json</div>
+
+        <div class="hero-card-name">Kananelo Pete</div>
+        <div class="hero-card-role">Software Engineer · AI Team Lead</div>
+
+        <div class="hero-card-stat">
+          <div>
+            <div class="stat-val">2+</div>
+            <div class="stat-label">Years Exp.</div>
+          </div>
+          <div>
+            <div class="stat-val">3+</div>
+            <div class="stat-label">Projects</div>
+          </div>
+          <div>
+            <div class="stat-val">AZ</div>
+            <div class="stat-label">AI Certified</div>
+          </div>
+        </div>
+
+        <div class="hero-card-tags">
+          <span class="tag">React.js</span>
+          <span class="tag">Python</span>
+          <span class="tag gold">Azure AI</span>
+          <span class="tag">Cybersecurity</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ABOUT SECTION
+       ============================================================ -->
+  <section id="about">
+    <div class="section-header fade-up">
+      <div class="section-label">About Me</div>
+      <h2>Who I am &<br/><em>what I do.</em></h2>
+    </div>
+    <div class="about-grid">
+      <div class="about-text fade-up">
+
+        <p>
+          I'm <strong>Kananelo Pete</strong>, a software engineer and cybersecurity enthusiast based in Ekurhuleni, South Africa. Trained through the <strong>ALX Software Engineering Bootcamp</strong> and holding an <strong>NQF4 in Systems Development</strong>, my technical toolkit spans Python, React, HTML/CSS (ES6+), Tailwind CSS, PHP and C# — giving me the range to build clean, modern web applications from the ground up.
+        </p>
+        <p>
+          I currently serve as <strong>Team Lead on an Agentic AI project</strong>, directing a team building intelligent, autonomous systems — a role that sits right at the intersection of where I thrive: software development meets artificial intelligence. Certified as both an <strong>AI Explorer and AI Pathfinder</strong>, with a <strong>Microsoft Azure AI</strong> certification and hands-on experience with JavaScript and React, I'm deeply passionate about how AI is reshaping what developers can build. I don't just write code — I think about what it should do next.
+        </p>
+        <p>
+          Beyond development, I bring a serious cybersecurity foundation — trained in ethical hacking, network defence, digital forensics and cloud security through Cisco NetAcad and a Gauteng Province learnership. My career across mining, logistics and education has added something most developers don't have: real-world discipline, leadership under pressure, and the ability to communicate across any room. I'm actively seeking a role in software engineering or AI where I can build things that matter, lead with intent, and keep growing at the edge of what's possible.
+        </p>
+
+        <div class="cert-list">
+          <div class="cert-item">
+            <div class="cert-icon">AZ</div>
+            <div>
+              <div class="cert-title">Microsoft Azure AI</div>
+              <div class="cert-sub">Certified · Microsoft</div>
+            </div>
+          </div>
+          <div class="cert-item">
+            <div class="cert-icon">AI</div>
+            <div>
+              <div class="cert-title">AI Explorer & AI Pathfinder</div>
+              <div class="cert-sub">Certified · ALX Africa</div>
+            </div>
+          </div>
+          <div class="cert-item">
+            <div class="cert-icon">JS</div>
+            <div>
+              <div class="cert-title">JavaScript (ES6+)</div>
+              <div class="cert-sub">ALX Software Engineering Bootcamp</div>
+            </div>
+          </div>
+          <div class="cert-item">
+            <div class="cert-icon">NQF</div>
+            <div>
+              <div class="cert-title">NQF4 Systems Development</div>
+              <div class="cert-sub">Full Stack Track · South Africa</div>
+            </div>
+          </div>
+          <div class="cert-item">
+            <div class="cert-icon">SEC</div>
+            <div>
+              <div class="cert-title">Cybersecurity Learnership</div>
+              <div class="cert-sub">Netcampus · Gauteng Province</div>
+            </div>
+          </div>
+          <div class="cert-item">
+            <div class="cert-icon">NET</div>
+            <div>
+              <div class="cert-title">Network Defense Essentials</div>
+              <div class="cert-sub">Cisco NetAcad</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fade-up">
+        <div class="sidebar-card">
+          <div class="sidebar-card-title">// location & availability</div>
+          <div class="info-line">📍 Ekurhuleni, Gauteng, South Africa</div>
+          <div class="info-line">🌍 Open to remote · global</div>
+          <div class="availability-pill">Available for opportunities</div>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-card-title">// what I bring</div>
+          <div class="skill-row"><span>Team leadership & project ownership</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>Security-first engineering mindset</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>Adaptable across industries & roles</span><div class="skill-dot"></div></div>
+          <div class="skill-row" style="border:none;padding-bottom:0"><span>Strong communication in 3 languages</span><div class="skill-dot"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SKILLS SECTION
+       ============================================================ -->
+  <section id="skills">
+    <div class="section-header fade-up">
+      <div class="section-label">Technical Stack</div>
+      <h2>The tools I<br/><em>work with daily.</em></h2>
+    </div>
+    <div class="skills-grid">
+
+      <!-- CARD 01: FRONTEND -->
+      <div class="skill-card fade-up">
+        <div class="skill-card-number">01</div>
+        <div class="skill-card-title">Frontend Development</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="skill-row"><span>HTML & CSS (ES6+)</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>React.js</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>Tailwind CSS</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>Responsive & Accessible UI</span><div class="skill-dot"></div></div>
+          <div class="skill-row" style="border:none;padding-bottom:0"><span>JavaScript (ES6+)</span><div class="skill-dot"></div></div>
+        </div>
+      </div>
+
+      <!-- CARD 02: SOFTWARE ENGINEERING -->
+      <div class="skill-card fade-up">
+        <div class="skill-card-number">02</div>
+        <div class="skill-card-title">Software Engineering</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="skill-row"><span>Python</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>PHP</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>C#</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>Git & GitHub</span><div class="skill-dot"></div></div>
+          <div class="skill-row" style="border:none;padding-bottom:0"><span>NQF4 Systems Development</span><div class="skill-dot"></div></div>
+        </div>
+      </div>
+
+      <!-- CARD 03: AI ENGINEERING -->
+      <div class="skill-card fade-up">
+        <div class="skill-card-number">03</div>
+        <div class="skill-card-title">AI Engineering</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="skill-row"><span>Microsoft Azure AI (Certified)</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>Agentic AI — Team Lead</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>AI Explorer & AI Pathfinder</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>Microsoft Copilot Integration</span><div class="skill-dot"></div></div>
+          <div class="skill-row" style="border:none;padding-bottom:0"><span>Prompt Engineering & AI Workflows</span><div class="skill-dot"></div></div>
+        </div>
+      </div>
+
+      <!-- CARD 04: CYBERSECURITY -->
+      <div class="skill-card fade-up">
+        <div class="skill-card-number">04</div>
+        <div class="skill-card-title">Cybersecurity</div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div class="skill-row"><span>Ethical Hacking & Pen Testing</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>Network Defence (Cisco NetAcad)</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>Digital Forensics</span><div class="skill-dot"></div></div>
+          <div class="skill-row"><span>Cloud Security & NIST Framework</span><div class="skill-dot"></div></div>
+          <div class="skill-row" style="border:none;padding-bottom:0"><span>Linux & SQL Security Automation</span><div class="skill-dot"></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       PROJECTS SECTION
+       ============================================================ -->
+  <section id="projects">
+    <div class="section-header fade-up">
+      <div class="section-label">Selected Work</div>
+      <h2>Things I've<br/><em>built.</em></h2>
+    </div>
+
+    <a href="https://github.com/petekananelo31" target="_blank" class="project-row fade-up">
+      <div class="project-num">01</div>
+      <div>
+        <div class="project-name">Agentic AI Project Manager</div>
+        <div class="project-desc">An intelligent AI agent that helps development teams prioritise sprints, auto-generate summary reports, and deliver clear, readable feedback for clients and stakeholders — making every project flow seamlessly from start to finish.</div>
+      </div>
+      <div class="project-meta">
+        <div class="project-tags">
+          <span class="tag">Python</span>
+          <span class="tag">Agentic AI</span>
+          <span class="tag gold">Team Lead</span>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+    </a>
+
+    <a href="https://github.com/petekananelo31" target="_blank" class="project-row fade-up">
+      <div class="project-num">02</div>
+      <div>
+        <div class="project-name">Portfolio Website</div>
+        <div class="project-desc">A clean, responsive personal portfolio built from scratch — designed to showcase technical skills, projects and professional experience to employers and clients globally.</div>
+      </div>
+      <div class="project-meta">
+        <div class="project-tags">
+          <span class="tag">HTML/CSS</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">UI Design</span>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+    </a>
+
+    <a href="https://github.com/petekananelo31" target="_blank" class="project-row fade-up">
+      <div class="project-num">03</div>
+      <div>
+        <div class="project-name">More on GitHub</div>
+        <div class="project-desc">Explore my full collection of projects — from React applications and Python scripts to cybersecurity experiments and AI integrations, all available on my GitHub profile.</div>
+      </div>
+      <div class="project-meta">
+        <div class="project-tags">
+          <span class="tag">React</span>
+          <span class="tag">Python</span>
+          <span class="tag">Open Source</span>
+        </div>
+        <div class="project-arrow">↗</div>
+      </div>
+    </a>
+  </section>
+
+  <!-- ============================================================
+       CONTACT SECTION
+       ============================================================ -->
+  <section id="contact">
+    <div class="section-header fade-up">
+      <div class="section-label">Let's Connect</div>
+      <h2>Let's build something<br/><em>remarkable.</em></h2>
+    </div>
+    <div class="contact-grid">
+      <div class="fade-up">
+        <p class="contact-desc">
+          Open to software engineering and AI roles — remote or based in Ekurhuleni, South Africa. I reply within 24 hours. Let's build something that makes a difference.
+        </p>
+        <div style="margin-top:48px">
+
+          <a href="mailto:petekananelo31@gmail.com" class="contact-link">
+            <span class="contact-link-label">Email</span>
+            <span>petekananelo31@gmail.com</span>
+            <span class="contact-link-arrow">↗</span>
+          </a>
+
+          <a href="https://linkedin.com/in/kananelo-pete-24992a277" target="_blank" class="contact-link">
+            <span class="contact-link-label">LinkedIn</span>
+            <span>Kananelo Pete</span>
+            <span class="contact-link-arrow">↗</span>
+          </a>
+
+          <a href="https://github.com/petekananelo31" target="_blank" class="contact-link">
+            <span class="contact-link-label">GitHub</span>
+            <span>petekananelo31</span>
+            <span class="contact-link-arrow">↗</span>
+          </a>
+
+        </div>
+      </div>
+
+      <!-- CONTACT FORM (cosmetic — wire up with Formspree or EmailJS if needed) -->
+      <div class="contact-form-area fade-up">
+        <div class="form-row">
+          <label class="form-label">// your name</label>
+          <input type="text" class="form-input" placeholder="Jane Smith"/>
+        </div>
+        <div class="form-row">
+          <label class="form-label">// your email</label>
+          <input type="email" class="form-input" placeholder="jane@company.com"/>
+        </div>
+        <div class="form-row">
+          <label class="form-label">// message</label>
+          <textarea class="form-input" placeholder="Tell me about the opportunity..."></textarea>
+        </div>
+        <button class="btn-send">Send Message →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <a href="#hero" class="footer-logo">Kananelo Pete</a>
+    <div class="footer-copy">© 2026 — Built with precision & intent.</div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // NAV scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+    // Fade-up on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });    }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
+    document.querySelectorAll('.fade-up').forEach((el, i) => {
+      el.style.transitionDelay = `${(i % 4) * 0.1}s`;
+      observer.observe(el);
+    });
+    // Immediately show all on local file:// (no server)
+    if (location.protocol === 'file:') {
+      document.querySelectorAll('.fade-up').forEach(el => el.classList.add('visible'));
+    }
+  </script>
+</body>
+</html>
